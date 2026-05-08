@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+    <title>Hotel Backend Tester</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: #fff;
+            padding: 20px;
+        }
+        h2 {
+            color: gold;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        button {
+            background: gold;
+            border: none;
+            cursor: pointer;
+        }
+        .section {
+            border: 1px solid #444;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Hotel Backend Test Panel</h1>
+
+<!-- ================= ADD ROOM ================= -->
+<div class="section">
+    <h2>Add Room</h2>
+    <input id="name" placeholder="Room Name">
+    <input id="price" placeholder="Price">
+    <input id="capacity" placeholder="Capacity">
+    <button onclick="addRoom()">Add Room</button>
+</div>
+
+<!-- ================= VIEW ROOMS ================= -->
+<div class="section">
+    <h2>All Rooms</h2>
+    <button onclick="getRooms()">Load Rooms</button>
+    <ul id="rooms"></ul>
+</div>
+
+<!-- ================= BOOK ROOM ================= -->
+<div class="section">
+    <h2>Book Room</h2>
+    <input id="roomId" placeholder="Room ID">
+    <input id="custName" placeholder="Customer Name">
+    <input id="email" placeholder="Email">
+    <input type="date" id="checkIn">
+    <input type="date" id="checkOut">
+    <button onclick="bookRoom()">Book Room</button>
+</div>
+
+<!-- ================= VIEW BOOKINGS ================= -->
+<div class="section">
+    <h2>All Bookings</h2>
+    <button onclick="getBookings()">Load Bookings</button>
+    <ul id="bookings"></ul>
+</div>
+
+<!-- ================= BLOCK ROOM ================= -->
+<div class="section">
+    <h2>Block Room</h2>
+    <input id="blockRoomId" placeholder="Room ID">
+    <input type="date" id="from">
+    <input type="date" id="to">
+    <input id="reason" placeholder="Reason">
+    <button onclick="blockRoom()">Block Room</button>
+</div>
+
+<script>
+
+const URL = "http://localhost:8080/api";
+
+// ADD ROOM
+function addRoom() {
+
+    const name = document.getElementById("name").value;
+    const price = document.getElementById("price").value;
+    const capacity = document.getElementById("capacity").value;
+
+    fetch(URL + "/rooms", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            name: name,
+            price: Number(price),
+            capacity: Number(capacity)
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert("Room Added ID: " + data.id));
+}
+
+// GET ROOMS
+function getRooms() {
+    fetch(URL + "/rooms")
+    .then(res => res.json())
+    .then(data => {
+        rooms.innerHTML = "";
+        data.forEach(r => {
+            rooms.innerHTML += `<li>${r.id} - ${r.name} - ₹${r.price}</li>`;
+        });
+    });
+}
+
+// BOOK ROOM
+function bookRoom() {
+    fetch(URL + "/bookings", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            customer: {
+                name: custName.value,
+                email: email.value,
+                phone: "9999999999"
+            },
+            room: {
+                id: roomId.value
+            },
+            checkIn: checkIn.value,
+            checkOut: checkOut.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert("Booked! ID: " + data.id))
+    .catch(() => alert("Error"));
+}
+
+// GET BOOKINGS
+function getBookings() {
+    fetch(URL + "/bookings")
+    .then(res => res.json())
+    .then(data => {
+        bookings.innerHTML = "";
+        data.forEach(b => {
+            bookings.innerHTML += `<li>Booking ${b.id} - Room ${b.room.id} - ${b.customer.name}</li>`;
+        });
+    });
+}
+
+// BLOCK ROOM
+function blockRoom() {
+    fetch(URL + "/blocks", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            room: { id: blockRoomId.value },
+            blockedFrom: from.value,
+            blockedTo: to.value,
+            reason: reason.value
+        })
+    })
+    .then(res => res.json())
+    .then(() => alert("Blocked!"));
+}
+
+</script>
+
+</body>
+</html>

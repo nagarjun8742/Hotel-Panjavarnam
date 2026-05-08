@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 5%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 37 45% 60%;
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 85%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 37 45% 60%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 37 45% 60%;
+
+    --radius: 0.375rem;
+
+    --gold: 37 45% 60%;
+    --gold-light: 37 50% 72%;
+    --gold-dark: 37 38% 42%;
+    --cream: 40 30% 96%;
+    --charcoal: 0 0% 8%;
+    --obsidian: 0 0% 5%;
+
+    --glass: 0 0% 100% / 0.05;
+    --glass-border: 0 0% 100% / 0.08;
+    --glass-hover: 0 0% 100% / 0.08;
+
+    --sidebar-background: 0 0% 7%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 37 45% 60%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 85%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 37 45% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+  .text-gold-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--gold-light)), hsl(var(--gold)), hsl(var(--gold-dark)));
+  }
+
+  .border-gold-gradient {
+    border-image: linear-gradient(135deg, hsl(var(--gold-light)), hsl(var(--gold-dark))) 1;
+  }
+
+  .bg-gold-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold-light)), hsl(var(--gold)), hsl(var(--gold-dark)));
+  }
+
+  .overlay-dark {
+    @apply bg-background/70 backdrop-blur-sm;
+  }
+
+  .glass {
+    background: hsla(var(--glass));
+    border: 1px solid hsla(var(--glass-border));
+    backdrop-filter: blur(12px);
+  }
+
+  .glass-hover:hover {
+    background: hsla(var(--glass-hover));
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 30px -8px hsl(var(--gold) / 0.3);
+  }
+
+  .glow-gold-sm {
+    box-shadow: 0 0 20px -6px hsl(var(--gold) / 0.2);
+  }
+ 
+}
+ /* Make calendar icon GOLD */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(74%) sepia(25%) saturate(500%) hue-rotate(10deg);
+    cursor: pointer;
+}
